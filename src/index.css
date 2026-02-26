@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+/* Garante que o container do React ocupe a tela toda */
+#root {
+  min-height: 100vh;
+  display: block;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f1f5f9; /* Slate 100 */
+}
+
+/* Fallback: se o Tailwind falhar em aplicar as classes dinâmicas, forçamos a altura do gráfico */
+div[class*="h-[520px]"] {
+  height: 520px !important;
+  width: 100% !important;
+  min-height: 520px;
+}
+
+div[class*="h-[500px]"] {
+  height: 500px !important;
+  width: 100% !important;
+}
+
+/* Garante que o container do Recharts não colapse */
+.recharts-responsive-container {
+  min-height: 100px;
+}
