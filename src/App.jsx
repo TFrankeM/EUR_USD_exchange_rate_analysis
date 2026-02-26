@@ -64,7 +64,7 @@ const App = () => {
     if (active && payload && payload.length) {
       return (
         <div className="bg-white p-4 border border-slate-200 shadow-xl rounded-lg">
-          <p className="font-bold text-slate-800 text-sm">{`Ano Fiscal: ${label}`}</p>
+          <p className="font-bold text-slate-800 text-sm">{`Ano fiscal: ${label}`}</p>
           <div className="h-px bg-slate-100 my-2" />
           <p className="text-blue-800 font-semibold">{`Taxa: ${payload[0].value.toFixed(4)} EUR/USD`}</p>
           <p className="text-slate-400 text-[10px] mt-1 italic">{payload[0].payload.type}</p>
