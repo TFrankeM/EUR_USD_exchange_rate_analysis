@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from "react";
 import {
   LineChart,
   Line,
@@ -10,11 +10,12 @@ import {
   ReferenceLine,
   ReferenceArea,
   Label
-} from 'recharts';
+} from "recharts";
 
 const App = () => {
   const data = useMemo(() => {
-    // 1. Dados Históricos do Marco Alemão (DEM/USD)
+    // Deutsche mark (DEM/USD)
+    // Source: https://www.bundesbank.de/dynamic/action/en/statistics/time-series-databases/time-series-databases/759784/759784?listId=www_sdks_b01011_1
     const rawDataDEM = [
       { year: 1948, dem: 3.3333 }, { year: 1949, dem: 3.5833 }, { year: 1950, dem: 4.2000 },
       { year: 1951, dem: 4.2000 }, { year: 1952, dem: 4.2000 }, { year: 1953, dem: 4.2000 },
@@ -35,149 +36,156 @@ const App = () => {
       { year: 1996, dem: 1.5037 }, { year: 1997, dem: 1.7348 }, { year: 1998, dem: 1.7592 }
     ];
 
-    // Cálculo da série sintética (USD por EUR)
+    // Synthectic serie (USD per EUR)
     const demToEurParity = 1.95583; 
     const synthetic = rawDataDEM.map(item => ({
       year: item.year,
-      rate: parseFloat((demToEurParity / item.dem).toFixed(5)),
-      type: 'Sintético (DEM/1.95583)'
+      rate: parseFloat((demToEurParity / item.dem).toFixed(4)),
+      type: "Synthetic (1.95583 / DEM-USD rate)"
     }));
 
-    // 2. Dados Reais da Era Euro (Médias Anuais fornecidas)
+    // Real data from Euro Era
+    // Source: https://www.macrotrends.net/2548/euro-dollar-exchange-rate-historical-chart
     const euroAverages = [
-      { year: 1999, rate: 1.0654 }, { year: 2000, rate: 0.9232 }, { year: 2001, rate: 0.8959 },
-      { year: 2002, rate: 0.9463 }, { year: 2003, rate: 1.1324 }, { year: 2004, rate: 1.2438 },
-      { year: 2005, rate: 1.2441 }, { year: 2006, rate: 1.2568 }, { year: 2007, rate: 1.3712 },
-      { year: 2008, rate: 1.4712 }, { year: 2009, rate: 1.3948 }, { year: 2010, rate: 1.3262 },
-      { year: 2011, rate: 1.3925 }, { year: 2012, rate: 1.2858 }, { year: 2013, rate: 1.3285 },
-      { year: 2014, rate: 1.3283 }, { year: 2015, rate: 1.1096 }, { year: 2016, rate: 1.1069 },
-      { year: 2017, rate: 1.1300 }, { year: 2018, rate: 1.1809 }, { year: 2019, rate: 1.1200 },
-      { year: 2020, rate: 1.1421 }, { year: 2021, rate: 1.1830 }, { year: 2022, rate: 1.0538 },
-      { year: 2023, rate: 1.0827 }, { year: 2024, rate: 1.0823 }, { year: 2025, rate: 1.1276 },
-      { year: 2026, rate: 1.1779 }
-    ].map(item => ({ ...item, type: 'Real (Média Anual BCE)' }));
+      { year: 1999, rate: 1.0658 }, { year: 2000, rate: 0.9236 }, { year: 2001, rate: 0.8956 },
+      { year: 2002, rate: 0.9456 }, { year: 2003, rate: 1.1312 }, { year: 2004, rate: 1.2439 },
+      { year: 2005, rate: 1.2441 }, { year: 2006, rate: 1.2556 }, { year: 2007, rate: 1.3705 },
+      { year: 2008, rate: 1.4708 }, { year: 2009, rate: 1.3948 }, { year: 2010, rate: 1.3257 },
+      { year: 2011, rate: 1.3920 }, { year: 2012, rate: 1.2848 }, { year: 2013, rate: 1.3281 },
+      { year: 2014, rate: 1.3285 }, { year: 2015, rate: 1.1095 }, { year: 2016, rate: 1.1069 },
+      { year: 2017, rate: 1.1297 }, { year: 2018, rate: 1.1810 }, { year: 2019, rate: 1.1195 },
+      { year: 2020, rate: 1.1422 }, { year: 2021, rate: 1.1827 }, { year: 2022, rate: 1.0530 },
+      { year: 2023, rate: 1.0813 }, { year: 2024, rate: 1.0824 }, { year: 2025, rate: 1.1300 },
+      { year: 2026, rate: 1.1780 }
+    ].map(item => ({ ...item, type: "Real (ECB annual average)" }));
 
     return [...synthetic, ...euroAverages];
   }, []);
+    // [variable]: recalculates the data only if variable changes.
+    // Since it's an empty array, it will only calculate once when the component mounts.
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 border border-slate-200 shadow-xl rounded-lg">
-          <p className="font-bold text-slate-800 text-sm">{`Ano fiscal: ${label}`}</p>
-          <div className="h-px bg-slate-100 my-2" />
-          <p className="text-blue-800 font-semibold">{`Taxa: ${payload[0].value.toFixed(4)} EUR/USD`}</p>
-          <p className="text-slate-400 text-[10px] mt-1 italic">{payload[0].payload.type}</p>
+        <div className="bg-white p-5 border border-slate-300 shadow-xl rounded-lg">
+          <p className="font-bold text-slate-900 text-base">{`Fiscal year: ${label}`}</p>
+          <div className="h-px bg-slate-200 my-2" />
+          <p className="text-blue-900 font-bold text-base">{`Rate: ${payload[0].value.toFixed(4)} EUR/USD`}</p>
+          <p className="text-slate-600 text-xs mt-1 italic">{payload[0].payload.type}</p>
         </div>
       );
     }
     return null;
   };
 
+  const startYear = 1950;
+  const endYear = 2025;
+  const yearsTicks = [];
+  for (let year = startYear; year <= endYear; year += 5) {
+      yearsTicks.push(year);
+  }
+
   return (
-    <div className="min-h-screen bg-slate-100 p-4 md:p-10 font-sans text-slate-900 leading-normal">
-      <div className="max-w-7xl mx-auto bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+    <div className="min-h-screen bg-slate-100 p-4 md:p-8 font-sans text-slate-900 leading-normal flex justify-center">
+      <div className="w-full max-w-[98%] bg-white rounded-2xl shadow-2xl border border-slate-300 overflow-hidden">
         
-        <header className="bg-slate-900 p-8 text-white">
-          <div className="flex justify-between items-start">
+        <header className="bg-slate-900 p-9 text-white">
+          <div className="flex items-start">
             <div>
-              <h1 className="text-3xl font-light tracking-tight mb-2">
-                Série histórica consolidada EUR/USD
+              <h1 className="text-3xl md:text-4xl font-light tracking-tight mb-4">
+                Consolidated historical series of the Euro-Dollar exchange rate
               </h1>
-              <p className="text-slate-400 text-sm max-w-4xl">
-                Análise cambial de longo prazo integrada. Dados sintéticos (1948–1998) via Marco Alemão 
-                e dados reais (1999–2026) baseados em médias anuais do Banco Central Europeu.
+              <p className="text-slate-300 text-base md:text-lg max-w-full leading-relaxed">
+                Integrated long-term exchange rate analysis. Synthetic data (1948-1998) via Deutsche Mark and 
+                real data (1999-2026) based on Deutsche Bundesbank Eurosystem annual averages.
               </p>
             </div>
-            
-            <div className="text-right text-[10px] text-slate-500 uppercase tracking-widest">
-              {/*Confidencial • */}FGV Diretoria Internacional
-            </div>
-            
           </div>
         </header>
 
-        <div className="p-8">
+        <div className="p-8 md:p-9">
           <div className="h-[520px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data} margin={{ top: 30, right: 30, left: 20, bottom: 40 }}>
+              <LineChart data={data} margin={{ top: 30, right: 30, left: 20, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="2 2" vertical={false} stroke="#f1f5f9" />
                 <XAxis 
                   dataKey="year" 
                   stroke="#94a3b8" 
-                  fontSize={11} 
-                  tickLine={false} 
-                  axisLine={false}
-                  interval={4}
+                  ticks={yearsTicks}
+                  tickMargin={10}
+                  fontSize={14}
+                  tickLine={true} 
+                  axisLine={true}
                 />
                 <YAxis 
                   stroke="#94a3b8" 
-                  fontSize={11} 
-                  tickLine={false} 
-                  axisLine={false}
+                  fontSize={14} 
+                  tickMargin={10}
+                  tickLine={true} 
+                  axisLine={true}
                   domain={[0.4, 1.7]}
                   tickFormatter={(val) => `$${val.toFixed(2)}`}
                 />
                 <Tooltip content={<CustomTooltip />} />
                 
-                {/* Áreas Metodológicas */}
-                <ReferenceArea x1={1948} x2={1949} fill="#f8fafc" fillOpacity={0.6}>
-                  <Label value="JEIA" position="top" fill="#64748b" fontSize={9} offset={12} />
+                {/* Methodological areas */}
+                <ReferenceArea x1={1948} x2={1949} fill="#e2e8f0" fillOpacity={0.8}>
+                  <Label value="JEIA" position="top" fill="#1e293b" fontSize={14} offset={15} />
                 </ReferenceArea>
-                <ReferenceArea x1={1949} x2={1953} fill="#f1f5f9" fillOpacity={0.4}>
-                  <Label value="BdL" position="top" fill="#64748b" fontSize={9} offset={12} />
+                <ReferenceArea x1={1949} x2={1953} fill="#cbd5e1" fillOpacity={0.7}>
+                  <Label value="BdL" position="top" fill="#1e293b" fontSize={14} offset={15} />
                 </ReferenceArea>
-                <ReferenceArea x1={1953} x2={1998} fill="#f8fafc" fillOpacity={0.2}>
-                   <Label value="FRANKFURT" position="top" fill="#64748b" fontSize={9} offset={12} />
+                <ReferenceArea x1={1953} x2={1998} fill="#f1f5f9" fillOpacity={0.8}>
+                   <Label value="FRANKFURT" position="top" fill="#1e293b" fontSize={14} offset={15} />
                 </ReferenceArea>
 
-                {/* Marcos Temporais */}
-                <ReferenceLine x={1985} stroke="#ef4444" strokeDasharray="3 3">
-                  <Label value="PLAZA ACCORD" position="insideTopLeft" fill="#ef4444" fontSize={9} fontWeight="bold" />
+                {/* Temporal frameworks */}
+                <ReferenceLine x={1985} stroke="#b91c1c" strokeDasharray="4 4" strokeWidth={2}>
+                  <Label value="PLAZA ACCORD" position="insideTopLeft" fill="#b91c1c" fontSize={14} fontWeight="bold" dx={5} dy={10}/>
                 </ReferenceLine>
 
-                <ReferenceLine x={1999} stroke="#0ea5e9" strokeWidth={2}>
-                  <Label value="INÍCIO ERA EURO" position="insideBottomRight" fill="#0ea5e9" fontSize={9} fontWeight="bold" dy={0} />
+                <ReferenceLine x={1999} stroke="#0369a1" strokeWidth={2.5}>
+                  <Label value="EURO ERA START" position="insideBottomRight" fill="#0369a1" fontSize={14} fontWeight="bold" dx={-5} dy={-10}  />
                 </ReferenceLine>
 
                 <Line 
                   type="monotone" 
                   dataKey="rate" 
-                  stroke="#0f172a" 
-                  strokeWidth={2.5} 
+                  stroke="#000000" 
+                  strokeWidth={3} 
                   dot={false}
-                  activeDot={{ r: 5, strokeWidth: 0, fill: '#3b82f6' }}
+                  activeDot={{ r: 5, strokeWidth: 0, fill: "#2563eb" }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 border-t border-slate-100 pt-8 text-sm">
-            <div className="space-y-4 bg-slate-50 p-6 rounded-xl border border-slate-200">
-              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-widest flex items-center gap-2">
-                <span className="w-2 h-2 bg-slate-400 rounded-full"></span>
-                Metodologia Pré-Euro (1948–1998)
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 border-t border-slate-300 pt-10 text-base">
+            <div className="space-y-4 bg-slate-50 p-8 rounded-xl border border-slate-300 shadow-sm">
+              <h3 className="text-sm font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
+                <span className="w-3 h-3 bg-slate-600 rounded-full"></span>
+                Pre-Euro methodology (1948-1998)
               </h3>
-              <p className="text-slate-600 text-xs leading-relaxed">
-                A série sintética utiliza o Marco Alemão (DEM) como âncora europeia. Até 1949, baseia-se na taxa fixa da Joint Export Import Agency (JEIA) (DEM 1 = USD 0.30). De 1949 a 1953, seguem as taxas do Bank deutscher Länder (BdL). Entre 1953 e 1998, utiliza-se a cotação oficial da Bolsa de Frankfurt. Toda a série foi convertida pela paridade irrevogável de <strong>1,95583 DEM/EUR</strong>.
+              <p className="text-slate-800 text-sm md:text-base leading-relaxed text-justify">
+                The synthetic series uses the Deutsche Mark (DEM) as the European anchor. Until 1949, it relies on the fixed rate of the Joint Export-Import Agency (JEIA) (DEM 1 = USD 0.30). From 1949 to 1953, it follows the Bank deutscher Länder (BdL) rates. Between 1953 and 1998, the official Frankfurt Stock Exchange quotation is used. The entire series was converted using the irrevocable parity of <strong>1.95583 DEM/EUR</strong>.
               </p>
             </div>
 
-            <div className="space-y-4 bg-slate-50 p-6 rounded-xl border border-slate-200">
-              <h3 className="text-xs font-bold text-sky-600 uppercase tracking-widest flex items-center gap-2">
-                <span className="w-2 h-2 bg-sky-500 rounded-full"></span>
-                Era Comum do Euro (1999–2026)
+            <div className="space-y-4 bg-slate-50 p-8 rounded-xl border border-slate-300 shadow-sm">
+              <h3 className="text-sm font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
+                <span className="w-3 h-3 bg-sky-600 rounded-full"></span>
+                Common Euro era (1999-2026)
               </h3>
-              <p className="text-slate-600 text-xs leading-relaxed">
-                Utiliza as taxas de referência publicadas pelo Banco Central Europeu (BCE). Os valores representam a média aritmética das cotações diárias de cada ano fiscal, permitindo a análise de tendências estruturais e ciclos de volatilidade sistêmica sem o ruído do mercado spot diário.
+              <p className="text-slate-800 text-sm md:text-base leading-relaxed text-justify">
+                It uses the reference rates published by the European Central Bank (ECB). Values represent the arithmetic average of daily quotes for each fiscal year.
               </p>
             </div>
           </div>
         </div>
 
-        <footer className="bg-slate-50 p-6 text-center border-t border-slate-100">
-          <p className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">
-            Série Consolidada • Atualizado em 26 de fevereiro de 2026 • Fonte: Bundesbank / BCE
+        <footer className="bg-slate-100 p-8 text-center border-t border-slate-100">
+          <p className="text-xs text-slate-400 font-medium uppercase tracking-widest">
+            Updated February 26, 2026 • Sources: Deutsche Bundesbank & European Central Bank 
           </p>
         </footer>
       </div>
