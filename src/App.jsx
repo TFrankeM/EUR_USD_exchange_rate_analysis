@@ -159,7 +159,8 @@ const App = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-
+        
+          {/* Methodology details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 border-t border-slate-300 pt-10 text-base">
             <div className="space-y-4 bg-slate-50 p-8 rounded-xl border border-slate-300 shadow-sm">
               <h3 className="text-sm font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
