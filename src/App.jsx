@@ -98,13 +98,13 @@ const App = () => {
                   stroke="#94a3b8" 
                   ticks={yearsTicks}
                   tickMargin={10}
-                  fontSize={14}
+                  fontSize={18}
                   tickLine={true} 
                   axisLine={true}
                 />
                 <YAxis 
                   stroke="#94a3b8" 
-                  fontSize={14} 
+                  fontSize={18} 
                   tickMargin={10}
                   tickLine={true} 
                   axisLine={true}
@@ -115,22 +115,22 @@ const App = () => {
                 
                 {/* Methodological areas */}
                 <ReferenceArea x1={1948} x2={1949} fill="#e2e8f0" fillOpacity={0.8}>
-                  <Label value="JEIA" position="top" fill="#1e293b" fontSize={14} offset={15} />
+                  <Label value="JEIA" position="top" fill="#1e293b" fontSize={18} offset={15} />
                 </ReferenceArea>
                 <ReferenceArea x1={1949} x2={1953} fill="#cbd5e1" fillOpacity={0.7}>
-                  <Label value="BdL" position="top" fill="#1e293b" fontSize={14} offset={15} />
+                  <Label value="BdL" position="top" fill="#1e293b" fontSize={18} offset={15} />
                 </ReferenceArea>
                 <ReferenceArea x1={1953} x2={1998} fill="#f1f5f9" fillOpacity={0.8}>
-                   <Label value="FRANKFURT" position="top" fill="#1e293b" fontSize={14} offset={15} />
+                   <Label value="FRANKFURT" position="top" fill="#1e293b" fontSize={18} offset={15} />
                 </ReferenceArea>
 
                 {/* Temporal frameworks */}
                 <ReferenceLine x={1985} stroke="#b91c1c" strokeDasharray="4 4" strokeWidth={2}>
-                  <Label value="PLAZA ACCORD" position="insideTopLeft" fill="#b91c1c" fontSize={14} fontWeight="bold" dx={5} dy={10}/>
+                  <Label value="PLAZA ACCORD" position="insideTopLeft" fill="#b91c1c" fontSize={18} fontWeight="bold" dx={5} dy={10}/>
                 </ReferenceLine>
 
                 <ReferenceLine x={1999} stroke="#0369a1" strokeWidth={2.5}>
-                  <Label value="EURO ERA START" position="insideBottomRight" fill="#0369a1" fontSize={14} fontWeight="bold" dx={-5} dy={-10}  />
+                  <Label value="EURO ERA START" position="insideBottomRight" fill="#0369a1" fontSize={18} fontWeight="bold" dx={-5} dy={-10}  />
                 </ReferenceLine>
 
                 <Line 
@@ -148,21 +148,21 @@ const App = () => {
           {/* Methodology details */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 border-t border-slate-300 pt-10 text-base">
             <div className="space-y-4 bg-slate-50 p-8 rounded-xl border border-slate-300 shadow-sm">
-              <h3 className="text-sm font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
+              <h3 className="text-base font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
                 <span className="w-3 h-3 bg-slate-600 rounded-full"></span>
                 Pre-Euro methodology (1948-1998)
               </h3>
-              <p className="text-slate-800 text-sm md:text-base leading-relaxed text-justify">
+              <p className="text-slate-800 text-sm md:text-lg leading-relaxed text-justify">
                 The synthetic series uses the Deutsche Mark (DEM) as the European anchor. Until 1949, it relies on the fixed rate of the Joint Export-Import Agency (JEIA) (DEM 1 = USD 0.30). From 1949 to 1953, it follows the Bank deutscher Länder (BdL) rates. Between 1953 and 1998, the official Frankfurt Stock Exchange quotation is used. The entire series was converted using the irrevocable parity of <strong>1.95583 DEM/EUR</strong>.
               </p>
             </div>
 
             <div className="space-y-4 bg-slate-50 p-8 rounded-xl border border-slate-300 shadow-sm">
-              <h3 className="text-sm font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
+              <h3 className="text-base font-bold text-sky-700 uppercase tracking-widest flex items-center gap-3">
                 <span className="w-3 h-3 bg-sky-600 rounded-full"></span>
                 Common Euro era (1999-2026)
               </h3>
-              <p className="text-slate-800 text-sm md:text-base leading-relaxed text-justify">
+              <p className="text-slate-800 text-sm md:text-lg leading-relaxed text-justify">
                 It uses the reference rates published by the European Central Bank (ECB). Values represent the arithmetic average of daily quotes for each fiscal year.
               </p>
             </div>
